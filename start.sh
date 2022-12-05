@@ -9,7 +9,7 @@ if [ -z "$REDIRECT_TARGET" ]; then
 else
 	# Add http if not set
 	if ! [[ $REDIRECT_TARGET =~ ^https?:// ]]; then
-		REDIRECT_TARGET="http://$REDIRECT_TARGET"
+		REDIRECT_TARGET="https://$REDIRECT_TARGET"
 	fi
 
 	# Add trailing slash
@@ -18,8 +18,8 @@ else
 	fi
 fi
 
-# Default to 80
-LISTEN="80"
+# Default to 443
+LISTEN="443"
 # Listen to PORT variable given on Cloud Run Context
 if [ ! -z "$PORT" ]; then
 	LISTEN="$PORT"
@@ -29,11 +29,15 @@ cat <<EOF > /etc/nginx/conf.d/default.conf
 server {
 	listen ${LISTEN};
 
-	rewrite ^/(.*)\$ ${REDIRECT_TARGET}\$1 ${REDIRECT_TYPE};
+	server_name $REDIRECT_TARGET;
+  
+	location / {
+		proxy_pass  ${REDIRECT_TARGET};
+	}
 }
 EOF
 
 
-echo "Listening to $LISTEN, Redirecting HTTP requests to ${REDIRECT_TARGET}..."
+echo "Listening to $LISTEN, Redirecting HTTPS requests to ${REDIRECT_TARGET}..."
 
 exec nginx -g "daemon off;"

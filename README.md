@@ -2,7 +2,9 @@
 
 ![Docker Build Status](https://img.shields.io/docker/build/morbz/docker-web-redirect.svg) ![Docker Pulls](https://img.shields.io/docker/pulls/morbz/docker-web-redirect.svg) ![Docker Stars](https://img.shields.io/docker/stars/morbz/docker-web-redirect.svg)
 
-This Docker container listens on port 80 and redirects all web traffic to the given target domain/URL.
+This Docker container listens on port 443 and proxy_pass all web traffic to the given target domain/URL.
+
+Forked from https://github.com/MorbZ/docker-web-redirect
 
 ## Features ##
 - Lightweight: Uses only ~2 MB RAM on Linux
